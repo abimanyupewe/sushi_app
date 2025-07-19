@@ -13,7 +13,7 @@ class Onboarding extends StatelessWidget {
   void _onIntroEnd(context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const HomePage()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) =>HomePage()));
   }
 
   @override
@@ -28,7 +28,7 @@ class Onboarding extends StatelessWidget {
         color: Colors.white,
       ),
       bodyTextStyle: bodyStyle,
-      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      bodyPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
       imagePadding: EdgeInsets.zero,
     );
 

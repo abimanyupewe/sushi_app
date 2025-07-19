@@ -11,7 +11,10 @@ class ImageApp {
 
   // Menu
   static const String nigiriSushi = "assets/images/nigiri.png";
-  static const String comboSushi = "assets/images/combo.png";
+  static const String makiSushi = "assets/images/maki.png";
+  static const String comboSushi2 = "assets/images/combo_sushi.png";
+  static const String salmonSushi = "assets/images/salmon_sushi.png";
+  static const String comboSushi1 = "assets/images/combo.png";
   static const String sakeSushi = "assets/images/sushi.png";
   static const String tobikoSushi = "assets/images/tobiko.png";
   static const String uramakiSushi = "assets/images/uramaki.png";
