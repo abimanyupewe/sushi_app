@@ -14,24 +14,26 @@ class DetailPage extends StatelessWidget {
 
     if (sushi == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Detail Sushi')),
-        body: Center(child: Text('Data sushi tidak ditemukan')),
+        appBar: AppBar(title: Text('Detail')),
+        body: Center(child: Text('Sushi not found')),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(sushi['name'])),
+      appBar: AppBar(title: Text(sushi != null ? sushi['name'] : 'Detail')),
       body: Padding(
-        padding: const EdgeInsets.only(right: 30, left: 30),
+        padding: const EdgeInsets.only(left: 30, right: 30),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Padding(
-                padding: const EdgeInsets.all(50),
-                child: Image.asset(sushi['image'], width: 200),
-              )),
-              SizedBox(height: 16),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: Image.asset(sushi['image'], width: 300),
+                ),
+              ),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -41,83 +43,84 @@ class DetailPage extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.star, color: Colors.amber),
-                      Text(sushi['rating'].toString()),
+                      Icon(Icons.star, color: Colors.amber, size: 24),
+                      Text(
+                        sushi['rating'].toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 10),
               if (sushi['description'] != null)
                 Text(sushi['description'], style: TextStyle(fontSize: 16)),
-              SizedBox(height: 16),
+              SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                color: Colors.grey.shade200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    if (sushi['servingTime'] != null) ...[
+                    if (sushi['servingTime'] != null)
                       Row(
                         children: [
-                          Icon(Icons.access_time, size: 25, color: Colors.red),
+                          Icon(Icons.access_time, size: 20, color: Colors.red),
                           SizedBox(width: 4),
                           Text(
-                            sushi['servingTime'],
-                            style: TextStyle(fontSize: 16),
+                            '${sushi['servingTime']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
-                    ],
-                    if (sushi['calories'] != null) ...[
+                    if (sushi['calories'] != null)
                       Row(
                         children: [
-                          SizedBox(width: 25),
                           Icon(
                             Icons.local_fire_department,
-                            size: 16,
+                            size: 20,
                             color: Colors.red,
                           ),
                           SizedBox(width: 4),
                           Text(
                             '${sushi['calories']} kcal',
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
-                    ],
                   ],
                 ),
               ),
-              SizedBox(height: 16),
-              if (sushi['ingredients'] != null)
+              SizedBox(height: 20),
+              if (sushi['ingredients'] != null && sushi['ingredients'] is List)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ingredients:',
+                      'Ingredients',
                       style: TextStyle(
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
                       ),
                     ),
                     SizedBox(height: 8),
-                    ...List<Widget>.from(
-                      (sushi['ingredients'] as List).map(
-                        (ingredient) => Text('- $ingredient'),
-                      ),
-                    ),
+                    ...sushi['ingredients'].map<Widget>((ingredient) {
+                      return Text(ingredient, style: TextStyle(fontSize: 16));
+                    }).toList(),
                   ],
                 ),
-              SizedBox(height: 16),
+              SizedBox(height: 20),
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   children: [
@@ -127,13 +130,14 @@ class DetailPage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Price:',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                            Text('Price :'),
                             Text(
                               '\$ ${(sushi['price'] ?? 0).toStringAsFixed(2)}',
-                              style: TextStyle(fontSize: 20, color: Colors.red),
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -141,10 +145,10 @@ class DetailPage extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.red,
-                              child: Icon(Icons.remove, color: Colors.white),
+                              child: Icon(Icons.add, color: Colors.white),
                             ),
                             SizedBox(width: 10),
-                            Text('1', style: TextStyle(fontSize: 18)),
+                            Text("1", style: TextStyle(fontSize: 20)),
                             SizedBox(width: 10),
                             CircleAvatar(
                               backgroundColor: Colors.red,
@@ -154,24 +158,24 @@ class DetailPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 14),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // Handle add to cart action
+                            // Handle order action
                           },
                           child: Container(
                             width: 150,
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            margin: EdgeInsets.only(top: 20),
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Center(
                               child: Text(
-                                'Add to Cart',
+                                'Add Cart',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -183,12 +187,11 @@ class DetailPage extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Handle add to cart action
+                            // Handle order action
                           },
                           child: Container(
-                            width: 150,
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            margin: EdgeInsets.only(top: 20),
+                            width: 155,
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(8),

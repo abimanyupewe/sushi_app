@@ -9,7 +9,9 @@ class CardPopuler extends StatelessWidget {
   void toDetailPage(BuildContext context, String id) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DetailPage(id: id)),
+      MaterialPageRoute(
+        builder: (context) => DetailPage(id: id),
+      ),
     );
   }
 

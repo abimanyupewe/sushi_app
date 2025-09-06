@@ -5,12 +5,33 @@ import 'package:sushi_app/data/sushi_data.dart';
 import 'package:sushi_app/utils/constant/colors.dart';
 import 'package:sushi_app/utils/constant/image_string.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sushi_app/pages/detailPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final DataSushi dataSushi = DataSushi();
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
+    final filteredPopuler = dataSushi.sushiPopuler
+        .where(
+          (sushi) => sushi['name'].toString().toLowerCase().contains(
+            searchText.toLowerCase(),
+          ),
+        )
+        .toList();
+    final filteredRekomendasi = dataSushi.sushiRekomendasi
+        .where(
+          (sushi) => sushi['name'].toString().toLowerCase().contains(
+            searchText.toLowerCase(),
+          ),
+        )
+        .toList();
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -58,6 +79,15 @@ class HomePage extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailPage(id: '64f8a1c1e1a1a1a1a1a1b1a7'),
+                              ),
+                            );
+                          },
                           child: Container(
                             width: 150,
                             height: 50,
@@ -120,6 +150,11 @@ class HomePage extends StatelessWidget {
                     ),
                     hintText: 'Search a sushi',
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value;
+                    });
+                  },
                 ),
               ),
             ),
@@ -148,11 +183,9 @@ class HomePage extends StatelessWidget {
                     height: 260,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: dataSushi.sushiPopuler.length,
+                      itemCount: filteredPopuler.length,
                       itemBuilder: (context, index) {
-                        return CardPopuler(
-                          sushi: dataSushi.sushiPopuler[index],
-                        );
+                        return CardPopuler(sushi: filteredPopuler[index]);
                       },
                     ),
                   ),
@@ -178,9 +211,9 @@ class HomePage extends StatelessWidget {
             delegate: SliverChildBuilderDelegate((context, index) {
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                child: CardRecom(sushi: dataSushi.sushiRekomendasi[index]),
+                child: CardRecom(sushi: filteredRekomendasi[index]),
               );
-            }, childCount: dataSushi.sushiRekomendasi.length),
+            }, childCount: filteredRekomendasi.length),
           ),
         ],
       ),
